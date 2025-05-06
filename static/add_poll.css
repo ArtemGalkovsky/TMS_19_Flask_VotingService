@@ -1,0 +1,32 @@
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+h1 {
+    display: block;
+    width: 100%;
+    font-size: 5em;
+    text-align: center;
+}
+
+.add_poll {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.add_poll label{
+    font-size: 3.5em;
+    width: 70%;
+    margin-bottom: 0.5em;
+}
+
+.add_poll input {
+    font-size: 1em;
+    width: 100%;
+    padding-left: 0.5em;
+    border-radius: 2em;
+}
