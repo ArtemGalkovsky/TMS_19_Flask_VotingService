@@ -3,12 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>All Votes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 </head>
 <body>
-    <ul>
-        {% for poll in polls %}
-        <li>poll[0], poll[1]: poll[2]</li>
-        {% endfor %}
-    </ul>
+    {% include "menu.html" %}
+
+    <main>
+        <h3>Опросы:</h3>
+        <ul>
+            {% for poll in polls %}
+            <li><a href="{{ url_for('view_poll', id=poll[0]) }}">{{ poll[1] }}</a>: {{ poll[2] }}</li>
+            {% endfor %}
+        </ul>
+    </main>
 </body>
 </html>

@@ -1,0 +1,101 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    font-size: 0.9em;
+}
+
+h1 {
+    display: block;
+    width: 100%;
+    font-size: 5em;
+    text-align: center;
+}
+
+input, button {
+    margin: 0.2em auto;
+}
+
+main {
+    width: 100%;
+}
+
+.add_poll {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.add_poll form {
+    width: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.add_poll label{
+    font-size: 3.5em;
+    width: 100%;
+}
+
+.add_poll input {
+    font-size: 1em;
+    width: 100%;
+    padding-left: 0.5em;
+    border-radius: 2em;
+}
+
+.multiple_answers_allowed > label {
+    width: fit-content;
+    font-size: 3em;
+    margin-left: 0.1em;
+    margin-bottom: 0.5em;
+}
+
+.multiple_answers_allowed input {
+    width: 1.3%;
+    transform: scale(3);
+    vertical-align: middle;
+}
+
+.add_poll button {
+    font-size: 3em;
+    width: 100%;
+    border-radius: 2em;
+}
+
+.question {
+    width: 100%;
+}
+
+.question button {
+    width: 30%;
+}
+
+.add_poll input.question_text {
+    width: 100%;
+}
+
+.delete_question {
+    width: 24%;
+    font-size: 2em;
+    border-radius: 2em;
+}
+
+.form_added_successfully {
+    background-color: lime;
+}
+
+.form_adding_failed {
+    background-color: darkred;
+}
+
+.poll_status {
+    width: 70%;
+    font-size: 3em;
+    text-align: center;
+    padding: 0.5em;
+    border-radius: 2em;
+    color: wheat;
+}

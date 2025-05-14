@@ -5,21 +5,15 @@ class Creator(DefaultCreatorWithInitialTables):
     def __init__(self, *, initial_tables_auto_creation: bool = False):
         super().__init__(POLLS_DATABASE_NAME, initial_tables_auto_creation)
 
-    def create_initial_tables(self, bypass_check_for_duplicate_creation: bool = False) -> bool:
-        if self._already_created and not bypass_check_for_duplicate_creation:
-            return False
-
+    def create_initial_tables(self) -> bool:
         self._cursor.execute('''CREATE TABLE IF NOT EXISTS polls(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL UNIQUE,
             description TEXT,
-            data JSON NOT NULL DEFAULT '[]',
-            votes_table_id INTEGER NOT NULL,
+            multiple_votes_enabled BOOLEAN NOT NULL DEFAULT FALSE,
             visible BOOLEAN NOT NULL
                                 )''')
         self._connection.commit()
-
-        self._already_created = True
 
         return True
 

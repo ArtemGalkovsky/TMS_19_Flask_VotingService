@@ -11,17 +11,9 @@ class PollAlreadyExists(DatabaseException):
         super().__init__(f"Poll '{poll_name}' already exists.")
 
 class PollNotFound(DatabaseException):
-    def __init__(self, poll_id: int):
-        super().__init__(f"Poll {poll_id} not found.")
+    def __init__(self, poll_id_or_name: int | str):
+        super().__init__(f"Poll {poll_id_or_name} not found.")
 
-class UserAlreadyExists(DatabaseException):
-    def __init__(self, username: str):
-        super().__init__(f"User '{username}' already exists.")
-
-class UserNotExist(DatabaseException):
-    def __init__(self, username: str):
-        super().__init__(f"User '{username}' does not exist.")
-
-class UserAlreadyVoted(DatabaseException):
-    def __init__(self, username: str):
-        super().__init__(f"User '{username}' already voted.")
+class IPAlreadyVoted(DatabaseException):
+    def __init__(self, ip: str):
+        super().__init__(f"IP {ip} already voted.")

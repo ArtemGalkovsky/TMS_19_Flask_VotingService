@@ -1,0 +1,11 @@
+main {
+    font-size: 3em;
+}
+
+li {
+    margin-left: 1.3em;
+}
+
+li a {
+    text-decoration: underline !important;
+}
