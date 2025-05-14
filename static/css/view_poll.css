@@ -1,0 +1,12 @@
+main {
+    font-size: 1.5em;
+    margin-left: 4em;
+}
+
+li {
+    list-style-type: none;
+}
+
+button {
+    font-size: 1.2em;
+}

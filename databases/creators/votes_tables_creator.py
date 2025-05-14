@@ -10,7 +10,7 @@ class Creator(DefaultConnection):
             raise TypeError('poll_id must be of type int.')
 
         self._cursor.execute(f'''CREATE TABLE IF NOT EXISTS votes_{poll_id} (
-            question_id INTEGER PRIMARY KEY NOT NULL,
+            question_id INTEGER NOT NULL,
             vote BOOLEAN NOT NULL DEFAULT FALSE,
             ip TEXT NOT NULL
         )''')

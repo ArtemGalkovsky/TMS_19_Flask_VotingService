@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect
-
-from databases.exceptions import PollNotFound, PollAlreadyExists
+from databases.exceptions import PollNotFound, PollAlreadyExists, IPAlreadyVoted
 from databases.handlers.polls_handler import PollsHandler
 from databases.handlers.questions_handler import QuestionsHandler
 from databases.handlers.votes_handler import VotesHandler
@@ -77,23 +76,46 @@ def view_poll():
         poll_questions = QuestionsHandler().get_questions(poll_id_int)
         poll_data = PollsHandler().get_poll_data(poll_id_int)
 
-        return render_template("view_poll.html", poll={
+        poll_info = {
             "title": poll_data[0],
             "description": poll_data[1],
             "multiple_votes_enabled": poll_data[2],
             "questions": poll_questions,
             "id": poll_id_int
+        }
+
+        if VotesHandler().is_ip_already_voted(poll_id_int, request.remote_addr):
+            return render_template("view_poll.html", poll=poll_info, results={
+                                    "questions": QuestionsHandler().get_questions(poll_id_int),
+                                    "votes": VotesHandler().get_votes(poll_id_int),
         })
+
+        return render_template("view_poll.html", poll=poll_info, results={})
 
     return redirect("/", 404)
 
 
 @app.post("/vote")
 def vote():
-    print(request.form)
+    json = request.json
+    poll_id = json.get("id", None)
 
-    return redirect("/view_poll")
+    if poll_id is None or not poll_id.isnumeric() or not poll_id.strip():
+        return redirect("/")
+
+    poll_id = int(poll_id)
+    try:
+        if VotesHandler().is_ip_already_voted(poll_id, request.remote_addr):
+            return "OK"
+    except PollNotFound:
+        return redirect("/", 404)
+
+    for question_id, answer in json["questions"].items():
+        if answer:
+            VotesHandler().add_vote(poll_id, question_id, request.remote_addr)
+
+    return redirect(f"/view_poll?id={poll_id}")
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0", port=5000)

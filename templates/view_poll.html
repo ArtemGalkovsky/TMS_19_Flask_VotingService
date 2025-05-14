@@ -3,25 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <title>View Poll</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/view_poll.css') }}">
+    <script src="{{ url_for('static', filename='js/view_votes.js') }}"></script>
 </head>
 <body>
     {% include "menu.html" %}
 
-    <h1>{{ poll["title"] }}</h1>
-    <h3>{{ poll["description"] }}</h3>
-    <form action="{{ url_for('vote') }}" method="post" enctype="application/x-www-form-urlencoded">
-        <input type="hidden" name="ID{{ poll['id'] }}">
-        {% for poll_question in poll["questions"] %}
-        <ul>
-            <li>
-                <label>
-                    <input type="checkbox" name="question_{{ poll_question[0] }}">
-                    {{ poll_question[1] }}
-                </label>
-            </li>
-        </ul>
-        {% endfor %}
-        <button type="submit">Vote</button>
-    </form>
+    <main>
+        <h1>{{ poll["title"] }}</h1>
+        <h3>{{ poll["description"] }}</h3>
+        {% if results %}
+            <h4>Голоса:</h4>
+            {% for question_id, question_text in results["questions"] %}
+                <p>{{ question_text }}: {{ results["votes"][question_id] or 0 }}</p>
+            {% endfor %}
+        {% else %}
+            <form>
+                <input type="hidden" name="ID" value="{{ poll['id'] }}">
+                {% for poll_question in poll["questions"] %}
+                <ul>
+                    <li>
+                        <label>
+                            <input type="checkbox" name="question" data-id="{{ poll_question[0] }}">
+                            {{ poll_question[1] }}
+                        </label>
+                    </li>
+                </ul>
+                {% endfor %}
+                <button type="button">Vote</button>
+            </form>
+        {% endif %}
+    </main>
 </body>
 </html>

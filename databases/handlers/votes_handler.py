@@ -24,18 +24,23 @@ class VotesHandler(DefaultConnection):
         if not self.is_votes_table_exists(poll_id):
             raise PollNotFound(poll_id)
 
-        self._cursor.execute(f"""SELECT true FROM votes_{poll_id} WHERE ip = ?""",
-                             (ip,))
-
-        if self._cursor.fetchone():
-            raise IPAlreadyVoted(ip)
-
         self._cursor.execute(f"""INSERT INTO votes_{poll_id} (question_id, vote, ip) VALUES (?, ?, ?)""",
-                             (poll_id, question_id, ip))
+                             (question_id, True, ip))
         self._connection.commit()
 
     def get_votes(self, poll_id: int) -> dict:
         if not self.is_votes_table_exists(poll_id):
             raise PollNotFound(poll_id)
 
+        self._cursor.execute(f"""SELECT question_id, COUNT(*) FROM votes_{poll_id} GROUP BY question_id""",)
 
+        return {question_id: count for question_id, count in self._cursor.fetchall()}
+
+    def is_ip_already_voted(self, poll_id: int, ip: str) -> bool:
+        if not self.is_votes_table_exists(poll_id):
+            raise PollNotFound(poll_id)
+
+        self._cursor.execute(f"""SELECT true FROM votes_{poll_id}
+                                WHERE ip = ?""", (ip,))
+
+        return bool(self._cursor.fetchone())
